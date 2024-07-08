@@ -15,3 +15,12 @@ Feel free to use it if you see any interest in this.
 
 Contains some useful aliases, convenient for daily use. Renamed from
 `.gitconfig` to `dot-gitconfig` to exclude conflicts with repo.
+
+# dot-tmux.conf
+
+A config file that should be saved as ~/.tmux.conf.
+
+Contains some basic improvements like:
+- Mouse
+- vim-style keys
+- use system clipboard
