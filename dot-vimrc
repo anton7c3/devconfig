@@ -61,6 +61,11 @@ Plugin 'junegunn/fzf.vim'
 " FAR, Find And Replace plugin
 Plugin 'brooth/far.vim'
 
+" Voltrix color scheme
+Plugin 'volbot/voltrix.vim'
+
+Plugin 'rafi/awesome-vim-colorschemes'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -78,6 +83,8 @@ filetype plugin indent on    " required
 
 " ============================== Common Vim setup =============================
 
+set encoding=utf-8
+set ttymouse=xterm2
 set mouse=a
 
 set hlsearch
@@ -87,6 +94,9 @@ set smartcase
 set hidden
 set wildmenu
 set showcmd
+
+" colorscheme tender
+colorscheme voltrix
 
 " Autoreload files
 set autoread
