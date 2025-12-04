@@ -1,0 +1,26 @@
+# These are some additions to my .bashrc to make it even better
+
+# Custom PS1 that shows current time
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] | [\A]\r\n\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+
+# Append this line to ~/.bashrc to enable fzf keybindings for Bash:
+# Ctrl+R to search for previous command
+# Ctrl+T to search for file and paste it
+# Alt+Shift+C for cd into selected directory
+source /usr/share/doc/fzf/examples/key-bindings.bash
+
+# Add this line to enable fzf being triggered by **
+# The file can be taken from https://github.com/junegunn/fzf/blob/master/shell/completion.bash
+source ./.local/share/fzf/completion.bash
+
+# Custom commands
+alias count-usage="du -ahd1 | sort -hr"
+
+function tee-colorless() {
+    tee >(sed $'s/\033[[][^A-Za-z]*[A-Za-z]//g' > "$@")
+}
+

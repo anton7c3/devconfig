@@ -42,12 +42,6 @@ Plugin 'airblade/vim-gitgutter'
 " YCM from GitHub
 Plugin 'ycm-core/YouCompleteMe.git'
 
-" NERD Commenter
-" Plugin 'scrooloose/nerdcommenter'
-
-" CtrlP
-" Plugin 'ctrlpvim/ctrlp.vim.git'
-
 " Tagbar
 Plugin 'preservim/tagbar'
 
@@ -84,7 +78,7 @@ filetype plugin indent on    " required
 " ============================== Common Vim setup =============================
 
 set encoding=utf-8
-set ttymouse=xterm2
+" set ttymouse=xterm2
 set mouse=a
 
 set hlsearch
