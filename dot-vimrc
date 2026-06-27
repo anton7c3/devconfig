@@ -42,23 +42,31 @@ Plugin 'airblade/vim-gitgutter'
 " YCM from GitHub
 Plugin 'ycm-core/YouCompleteMe.git'
 
-" Tagbar
+" Tagbar, a panel on the right picking up ctags
+" Make sure to install universal-ctags and make sure to visit
+" https://github.com/preservim/tagbar/wiki for detailed instructions
 Plugin 'preservim/tagbar'
 
-" Minimap
-Plugin 'severin-lemaignan/vim-minimap'
+" QuickUI plugin for some menus and windows
+Plugin 'skywind3000/vim-quickui'
 
 " Fzf
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
-" FAR, Find And Replace plugin
-Plugin 'brooth/far.vim'
-
 " Voltrix color scheme
 Plugin 'volbot/voltrix.vim'
 
 Plugin 'rafi/awesome-vim-colorschemes'
+
+" TypeScript
+Plugin 'leafgarland/typescript-vim'
+
+" Go
+Plugin 'fatih/vim-go'
+
+" Copilot
+" Plugin 'github/copilot.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -89,8 +97,9 @@ set hidden
 set wildmenu
 set showcmd
 
-" colorscheme tender
-colorscheme voltrix
+colorscheme happy_hacking
+" colorscheme jellybeans
+" colorscheme voltrix
 
 " Autoreload files
 set autoread
@@ -181,6 +190,9 @@ autocmd FileType crystal setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
 " Use 2 spaced in .yamlfiles
 autocmd FileType yaml setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
 
+" Use 2 spaced in .ts files
+autocmd FileType typescript setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
+
 filetype indent plugin on
 
 " =========================== Per-filetype functions ==========================
@@ -203,10 +215,6 @@ nnoremap <F3> :NERDTreeFocus<CR>
 " Press Ctrl+V and the desired keystroke
 set <S-F3>=[1;2R
 nnoremap <S-F3> :NERDTreeToggle<CR>
-
-" ============================= NERD Commenter ================================
-
-let g:NERDCustomDelimiters = { 'crystal': { 'left': '# '} }
 
 " ================================= Tagbar ====================================
 
@@ -294,6 +302,14 @@ nnoremap <leader>h <plug>(YCMHover)
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
 
+nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)
+nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
+
+" nmap <leader>yth <Plug>(YCMTypeHierarchy)
+" Call hierarchy
+nmap <leader>ych <Plug>(YCMCallHierarchy)
+
+
 " =============================== CoC setup ===================================
 " source ~/.vim/coc_setup.vim
 
@@ -303,3 +319,60 @@ packadd termdebug
 " ================================== FAR ======================================
 " Search for visually selected text
 vnoremap /F y:F <C-R>=escape(@",'/\')<CR><CR>
+
+" ================================ vim-go =====================================
+" Autoformatting can be buggy and break the file.
+" let g:go_fmt_autosave = 0
+
+" ============================= Kiro terminal =================================
+
+" Open Kiro CLI in a separate terminal on the bottom right
+nnoremap <leader>tk :botright terminal kiro-cli<CR>
+
+" ============================= Context menu ==================================
+
+let copy_menu = [
+            \ ["... file name to clipboard (+)", 'let @+=expand("%:t")'],
+            \ ["... file name to clipboard (*)", 'let @*=expand("%:t")'],
+            \ ["... relative path to clipboard (+)", 'let @+=expand("%")'],
+            \ ["... relative path to clipboard (*)", 'let @*=expand("%")'],
+            \ ["... absolute path to clipboard (+)", 'let @+=expand("%:p")'],
+            \ ["... absolute path to clipboard (*)", 'let @*=expand("%:p")'],
+            \ ]
+
+let ycm_menu = [
+            \ ["... definition", 'YcmCompleter GoToDefinition'],
+            \ ["... implementation", 'YcmCompleter GoToImplementation'],
+            \ ["... references", 'YcmCompleter GoToReferences'],
+            \ ["... callers", 'YcmCompleter GoToCallers'],
+            \ ["... callees", 'YcmCompleter GoToCallees'],
+            \ ["... type", 'YcmCompleter GoToType'],
+            \ ["... call hierarchy", 'execute "normal \<Plug>(YCMCallHierarchy)"'],
+            \ ]
+
+let fold_menu = [
+            \ ["Syntax", 'set foldmethod=syntax'],
+            \ ["Indent", 'set foldmethod=indent'],
+            \ ["Manual", 'set foldmethod=manual'],
+            \ ]
+
+let fzf_menu = [
+            \ ["Buffers", 'Buffers'],
+            \ ["Windows", 'Windows'],
+            \ ["Marks", 'Marks'],
+            \ ["Marks in current buffer", 'BMarks'],
+            \ ["Tags", 'Tags']
+            \ ]
+
+let context_menu = [
+            \ ["Copy ... &>", 'call quickui#context#open_nested(g:copy_menu, {})'],
+            \ ["[YCM] Lookup ... &>", 'call quickui#context#open_nested(g:ycm_menu, {})'],
+            \ ["FZF &>", 'call quickui#context#open_nested(g:fzf_menu, {})'],
+            \ ['-'],
+            \ ["Fold mode &>", 'call quickui#context#open_nested(g:fold_menu, {})'],
+            \ ["Regenerate tags", '!ctags -R .'],
+            \ ["Kiro session", 'botright terminal kiro-cli']
+            \ ]
+
+" map 'K' to display the context menu
+nnoremap <silent>K :call quickui#tools#clever_context('m', g:context_menu, {})<cr>
